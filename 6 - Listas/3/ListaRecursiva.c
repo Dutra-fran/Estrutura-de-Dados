@@ -23,7 +23,8 @@ void add(float x, float y)
 
 void imprime(Ponto *p)
 {
-    if(p != NULL) {
+    if (p != NULL)
+    {
         printf("Ponto(%.1f, %.1f)\n", p->x, p->y);
         imprime(p->prox);
     }
