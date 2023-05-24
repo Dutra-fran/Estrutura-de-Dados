@@ -66,12 +66,12 @@ int particiona(int *V, int inicio, int final)
 
     while (esq < dir)
     {
-        while (V[esq] <= pivo)
+        while (esq <= final && V[esq] <= pivo)
         {
             esq++;
         }
 
-        while (V[dir] > pivo)
+        while (dir >= 0 && V[dir] > pivo)
         {
             dir--;
         }
