@@ -85,7 +85,7 @@ int insereElementoNoFinal(Lista *lista, TipoRegistro registro) {
 
     if(atual == NULL) {
         novoNo->ant = NULL;
-        lista->primeiro->ant = novoNo;
+        novoNo->prox = NULL;
         lista->primeiro = novoNo;
         lista->tamanho++;
         return 1;
