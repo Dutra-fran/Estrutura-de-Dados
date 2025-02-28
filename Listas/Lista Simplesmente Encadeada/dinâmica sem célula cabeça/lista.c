@@ -100,33 +100,42 @@ int insereElementoNaLista(Lista *lista, TipoRegistro registro, int indice) {
     if(novoNo == NULL) {
         return 0;
     }
+    novoNo->registro = registro;
 
     No *atual = lista->primeiro;
     No *anterior = NULL;
 
-    if(atual == NULL || indice == 0) {
-        novoNo->registro = registro;
+    if(lista->primeiro == NULL) {
         novoNo->prox = NULL;
+        lista->primeiro = novoNo;
+    } else {
         if(indice == 0) {
             novoNo->prox = lista->primeiro;
+            lista->primeiro = novoNo;
+        } else if(indice == lista->tamanho) {
+            while(atual != NULL) {
+                anterior = atual;
+                atual = atual->prox;
+            }
+
+            anterior->prox = novoNo;
+            novoNo->prox = NULL;
+        } else {
+            for(int i=0; i <= indice-1; i++) {
+                anterior = atual;
+                atual = atual->prox;
+                if(atual == NULL) {
+                    break;
+                }
+            }
+
+            anterior->prox = novoNo;
+            novoNo->prox = atual;
         }
-        lista->primeiro = novoNo;
-        lista->tamanho++;
-        return 1;
     }
 
-    for(int i=0; i <= indice-1; i++) {
-        anterior = atual;
-        atual = atual->prox;
-        if(atual == NULL) {
-            break;
-        }
-    }
-
-    novoNo->registro = registro;
-    anterior->prox = novoNo;
-    novoNo->prox = atual;
     lista->tamanho++;
+
     return 1;
 }
 
