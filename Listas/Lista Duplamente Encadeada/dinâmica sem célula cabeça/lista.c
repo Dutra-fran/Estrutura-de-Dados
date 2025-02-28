@@ -111,40 +111,48 @@ int insereElementoNaLista(Lista *lista, TipoRegistro registro, int indice) {
     if(novoNo == NULL) {
         return 0;
     }
+    novoNo->registro = registro;
 
     No *atual = lista->primeiro;
     No *anterior = NULL;
 
-    if(atual == NULL || indice == 0) {
-        novoNo->registro = registro;
+    if(lista->primeiro == NULL) {
         novoNo->prox = NULL;
-
+        novoNo->ant = NULL;
+        lista->primeiro = novoNo;
+    } else {
         if(indice == 0) {
             novoNo->prox = lista->primeiro;
-        }
+            novoNo->prox->ant = novoNo;
+            novoNo->ant = NULL;
+            lista->primeiro = novoNo;
+        } else if(indice == lista->tamanho) {
+            while(atual != NULL) {
+                anterior = atual;
+                atual = atual->prox;
+            }
 
-        if(lista->primeiro != NULL) {
-            novoNo->ant = lista->primeiro;
-            lista->primeiro->ant = novoNo;
-        }
+            novoNo->prox = NULL;
+            novoNo->ant = anterior;
+            anterior->prox = novoNo;
+        } else {
+            for(int i=0; i <= indice-1; i++) {
+                anterior = atual;
+                atual = atual->prox;
+                if(atual == NULL) {
+                    break;
+                }
+            }
 
-        lista->primeiro = novoNo;
-        lista->tamanho++;
-        return 1;
+            novoNo->prox = atual;
+            novoNo->ant = anterior;
+            anterior->prox = novoNo;
+            if(atual != NULL) {
+                atual->ant = novoNo;
+            }
+        }
     }
 
-    for(int i=0; i <= indice-1; i++) {
-        anterior = atual;
-        atual = atual->prox;
-        if(atual == NULL) {
-            break;
-        }
-    }
-
-    novoNo->registro = registro;
-    anterior->prox = novoNo;
-    novoNo->ant = anterior;
-    novoNo->prox = atual;
     lista->tamanho++;
     return 1;
 }
@@ -268,6 +276,18 @@ void exibirElementos(Lista *lista) {
         }
 
         printf("NULL\n");
+        no = lista->primeiro;
+
+        while(no != NULL) {
+            if(no->ant == NULL) {
+                printf("NULL ");
+            } else {
+                printf("%d  ", no->ant->registro.chave);
+            }
+            no = no->prox;
+        }
+
+        printf("\n");
     }
 }
 
