@@ -257,7 +257,7 @@ void exibirElementos(Lista *lista) {
 
 int destruirLista(Lista *lista) {
     if(!lista) {
-        No *atual = lista->cabeca->prox;
+        No *atual = lista->cabeca;
         No *anterior = NULL;
 
         while(atual != NULL) {
