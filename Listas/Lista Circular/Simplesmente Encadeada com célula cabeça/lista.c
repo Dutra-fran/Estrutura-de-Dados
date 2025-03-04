@@ -18,7 +18,7 @@ Lista *criarLista() {
     if(lista != NULL) {
         lista->cabeca = (No *)malloc(sizeof(No));
         if(lista->cabeca != NULL) {
-            lista->cabeca->prox = NULL;
+            lista->cabeca->prox = lista->cabeca;
         }
         lista->tamanho = 0;
     }
@@ -27,7 +27,7 @@ Lista *criarLista() {
 }
 
 int pegarElemento(Lista *lista, TipoRegistro *registro, TipoChave chave) {
-    if(lista == NULL || lista->cabeca->prox == NULL) {
+    if(lista == NULL || lista->cabeca->prox == lista->cabeca) {
         return 0;
     }
 
@@ -56,7 +56,7 @@ int insereElementoNoInicio(Lista *lista, TipoRegistro registro) {
     }
     novoNo->registro = registro;
 
-    if(lista->cabeca->prox == NULL) {
+    if(lista->cabeca->prox == lista->cabeca) {
         novoNo->prox = lista->cabeca;
         lista->cabeca->prox = novoNo;
     } else {
@@ -83,7 +83,7 @@ int insereElementoNoFinal(Lista *lista, TipoRegistro registro) {
     No *atual = lista->cabeca->prox;
     No *anterior = NULL;
 
-    if(atual == NULL) {
+    if(atual == lista->cabeca) {
         novoNo->prox = lista->cabeca;
         lista->cabeca->prox = novoNo;
     } else {
@@ -114,7 +114,7 @@ int insereElementoNaLista(Lista *lista, TipoRegistro registro, int indice) {
     No *atual = lista->cabeca->prox;
     No *anterior = NULL;
 
-    if(lista->cabeca->prox == NULL) {
+    if(atual == lista->cabeca) {
         novoNo->prox = lista->cabeca;
         lista->cabeca->prox = novoNo;
     } else {
@@ -149,24 +149,19 @@ int insereElementoNaLista(Lista *lista, TipoRegistro registro, int indice) {
 }
 
 int removerElementoDoInicio(Lista *lista) {
-    if(lista == NULL || lista->cabeca->prox == NULL) {
+    if(lista == NULL || lista->cabeca->prox == lista->cabeca) {
         return 0;
     }
 
     No *primeiro = lista->cabeca->prox;
     lista->cabeca->prox = lista->cabeca->prox->prox;
-
-    if(lista->cabeca->prox == lista->cabeca) {
-        lista->cabeca->prox = NULL;
-    }
-
     free(primeiro);
     lista->tamanho--;
     return 1;
 }
 
 int removerElementoDoFinal(Lista *lista) {
-    if(lista == NULL || lista->cabeca->prox == NULL) {
+    if(lista == NULL || lista->cabeca->prox == lista->cabeca) {
         return 0;
     }
 
@@ -174,7 +169,7 @@ int removerElementoDoFinal(Lista *lista) {
     No *anterior = NULL;
 
     if(atual->prox == lista->cabeca) {
-        lista->cabeca->prox = NULL;
+        lista->cabeca->prox = lista->cabeca;
     } else {
         while(atual->prox != lista->cabeca) {
             anterior = atual;
@@ -191,7 +186,7 @@ int removerElementoDoFinal(Lista *lista) {
 }
 
 int removerElementoDaLista(Lista *lista, TipoChave chave) {
-    if(lista == NULL || lista->cabeca->prox == NULL) {
+    if(lista == NULL || lista->cabeca->prox == lista->cabeca) {
         return 0;
     }
 
@@ -200,7 +195,7 @@ int removerElementoDaLista(Lista *lista, TipoChave chave) {
 
     if(atual->prox == lista->cabeca) {
         if(atual->registro.chave == chave) {
-            lista->cabeca->prox = NULL;
+            lista->cabeca->prox = lista->cabeca;
             free(atual);
             lista->tamanho--;
             return 1;
@@ -222,7 +217,7 @@ int removerElementoDaLista(Lista *lista, TipoChave chave) {
 }
 
 int alterarElementoDaLista(Lista *lista, TipoRegistro registro, int indice) {
-    if(lista == NULL || lista->cabeca->prox == NULL || lista->tamanho <= indice) {
+    if(lista == NULL || lista->cabeca->prox == lista->cabeca || lista->tamanho <= indice) {
         return 0;
     }
 
@@ -249,7 +244,7 @@ int estaVazia(Lista *lista) {
         return -1;
     }
 
-    if(lista->cabeca->prox == NULL) {
+    if(lista->cabeca->prox == lista->cabeca) {
         return 1;
     }
 
@@ -268,7 +263,7 @@ void exibirElementos(Lista *lista) {
     if(lista != NULL) {
         No *no = lista->cabeca->prox;
 
-        if(no != NULL) {
+        if(no != lista->cabeca) {
             if(no->prox == lista->cabeca) {
                 printf("%d->", no->registro.chave);
                 printf("CELULA CABECA->DE VOLTA AO PRIMEIRO ELEMENTO: %d\n", no->prox->prox->registro.chave);
@@ -281,7 +276,7 @@ void exibirElementos(Lista *lista) {
                 printf("CELULA CABECA->DE VOLTA AO PRIMEIRO ELEMENTO: %d\n", no->prox->registro.chave);
             }
         } else {
-            printf("NULL\n");
+            printf("CAB\n");
         }
     }
 }
